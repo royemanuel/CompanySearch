@@ -11,10 +11,27 @@ gd_big_html <- read_html(gd_big_url)
 gd_big_comp <- html_nodes(gd_big_html, ".m-0") %>%
     html_text(.)
 
-top_companies_bg <- as_tibble(as.data.frame(gd_big_comp, col.names = "Company")) %>%
-    transmute(Company = as.character(gd_big_comp)) %>%
-    mutate(Size = "Large",
+top_companies_big <- as.data.frame(gd_big_comp) %>%
+    as_tibble(.)
+
+top_companies_big <- top_companies_big[2:dim(top_companies_big)[1],]
+colnames(top_companies_big) <- c("Company")
+
+top_companies_big <-
+    top_companies_big %>%
+    mutate(Company = as.character(Company),
+           Size = "Large",
            Rank = as.integer(row.names(.)))
+
+## gd_big_html <- read_html(gd_big_url)
+
+## gd_big_comp <- html_nodes(gd_big_html, ".m-0") %>%
+##     html_text(.)
+
+## top_companies_bg <- as_tibble(as.data.frame(gd_big_comp, col.names = "Company")) %>%
+##     transmute(Company = as.character(gd_big_comp)) %>%
+##     mutate(Size = "Large",
+##            Rank = as.integer(row.names(.)))
 
 
 
@@ -37,4 +54,5 @@ top_companies_ms <-
            Size = "Small_Medium",
            Rank = as.integer(row.names(.)))
 
-top_companies <- bind_rows(top_companies_bg, top_companies_ms)
+top_companies <- bind_rows(top_companies_big, top_companies_ms) %>%
+    select(3, 1, 2)
