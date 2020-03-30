@@ -1,6 +1,7 @@
 library(tidyverse)
 library(rvest)
-
+library(readxl)
+library(writexl)
 ######################################################################
 ## gd = Glassdoor
 
@@ -35,6 +36,8 @@ top_companies_big <-
 
 
 
+
+
 gd_ms_url <- "https://www.glassdoor.com/Award/Best-Small-and-Medium-Companies-to-Work-For-LST_KQ0,43.htm"
 
 gd_ms_html <- read_html(gd_ms_url)
@@ -56,3 +59,12 @@ top_companies_ms <-
 
 top_companies <- bind_rows(top_companies_big, top_companies_ms) %>%
     select(3, 1, 2)
+
+write_xlsx(top_companies, path = "topCompanies.xlsx")
+
+
+
+
+
+
+
